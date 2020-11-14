@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29424.173
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppZseroEF6", "Bridge\AppZseroEF6.csproj", "{B0088B9A-4D4F-4BB2-BC80-3FF840A81504}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppZseroEF6", "AppZseroEF6\AppZseroEF6.csproj", "{B0088B9A-4D4F-4BB2-BC80-3FF840A81504}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
