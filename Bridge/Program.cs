@@ -26,8 +26,8 @@ namespace Bridge
 
                     var env = hostingContext.HostingEnvironment;
 
-                    config.AddJsonFile("api/appsettings.json", optional: true, reloadOnChange: true)
-                          .AddJsonFile("api/appsettings.Development.Json",
+                    config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                          .AddJsonFile("appsettings.Development.Json",
                                          optional: true, reloadOnChange: true);
 
               
