@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using AppZseroEF6.Model;
+using AppZseroEF6.Entities;
 using AppZseroEF6.Service;
 using AppZseroEF6.Util;
-using AppZseroEF6.ViewModels;
+using AppZseroEF6.ModelsDtos;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -50,10 +50,10 @@ namespace AppZseroEF6.Controllers
 
             var orders = _orderService.GetOrders(); 
            
-            List<OrderVM> result = new List<OrderVM>();
+            List<OrderDto> result = new List<OrderDto>();
             foreach (var order in orders)
             {
-                var item = order.Adapt<OrderVM>();
+                var item = order.Adapt<OrderDto>();
                 result.Add(item);
             }
             return Ok(result);
@@ -64,7 +64,7 @@ namespace AppZseroEF6.Controllers
         {
             var orders = _orderService.GetOrders()
                 .OrderByDescending(_ => _.DateCreated)
-                .Select(_=>_.Adapt<OrderVM>());
+                .Select(_=>_.Adapt<OrderDto>());
 
             
             return Ok(orders);
@@ -77,13 +77,13 @@ namespace AppZseroEF6.Controllers
         public async Task<ActionResult> getOrder(long id)
         {
             var order = _orderService.GetOrder(id);
-            OrderVM result = order.Adapt<OrderVM>();
+            OrderDto result = order.Adapt<OrderDto>();
             foreach (var item in order.OrderDetails)
             {
-                var orderDetail = item.Adapt<OrderDetailVM>();
+                var orderDetail = item.Adapt<OrderDetailDto>();
                 
                 orderDetail.ProductName = item.Product.Name;
-                result.OrderDetailVMs.Add(orderDetail);
+                result.OrderDetail.Add(orderDetail);
             }
            
             
@@ -91,10 +91,10 @@ namespace AppZseroEF6.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> createOrder(OrderCM model)
+        public async Task<ActionResult> createOrder(OrderDto model)
         {
             double totalAmount = 0;
-            foreach (var item in model.OrderDetailCMs)
+            foreach (var item in model.OrderDetail)
             {
                 if (item.Quantity <=  0 || item.Quantity > 5) return BadRequest();
                 var product = _productService.GetProduct(item.ProductId);
@@ -107,7 +107,7 @@ namespace AppZseroEF6.Controllers
             order.TotalAmount = totalAmount;
             order.CurrentStatus = (int) OrderCurrentStatus.received;
             _orderService.CreateOrder(order);
-            foreach (var item in model.OrderDetailCMs)
+            foreach (var item in model.OrderDetail)
             {
                 var orderDetail = item.Adapt<OrderDetail>();
                 orderDetail.OrderId = order.Id;

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AppZseroEF6.Model;
+using AppZseroEF6.Entities;
 using AppZseroEF6.Service;
-using AppZseroEF6.ViewModels;
+using AppZseroEF6.ModelsDtos;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -29,7 +29,7 @@ namespace AppZseroEF6.Controllers
 
         
         [HttpPost]
-        public async Task<ActionResult> createAddress(UserAddressCM model)
+        public async Task<ActionResult> createAddress(UserAddress  model)
         {
             
             var address = model.Adapt<UserAddress>();

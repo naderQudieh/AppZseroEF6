@@ -1,5 +1,5 @@
 ﻿using AppZseroEF6.Data.Infrastructure;
-using AppZseroEF6.Model;
+using AppZseroEF6.Entities;
 
 namespace AppZseroEF6.Data.Repositories
 {

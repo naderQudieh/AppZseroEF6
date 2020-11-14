@@ -1,6 +1,6 @@
-﻿using AppZseroEF6.Model;
+﻿using AppZseroEF6.Entities;
 using AppZseroEF6.Service;
-using AppZseroEF6.ViewModels;
+using AppZseroEF6.ModelsDtos;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -29,10 +29,10 @@ namespace AppZseroEF6.Controllers
             var productNewBard = _productService.GetProducts()
                     .Where(p => p.DateSale <= DateTime.Now && p.Status ==(int)ProductStatus.available)
                     .OrderByDescending(p => p.DateSale).Take(5);
-            List<ProductVM> result = new List<ProductVM>();
+            List<ProductDto> result = new List<ProductDto>();
             foreach(var product in productNewBard)
             {
-                ProductVM item = product.Adapt<ProductVM>();
+                ProductDto item = product.Adapt<ProductDto>();
                 item.Description = "";
       
                 
@@ -47,10 +47,10 @@ namespace AppZseroEF6.Controllers
             var productNewBard = _productService.GetProducts()
                     .Where(p => p.DateSale <= DateTime.Now && p.Status == (int)ProductStatus.available)
                     .OrderByDescending(p => p.DateSale).Skip(5).Take(5);
-            List<ProductVM> result = new List<ProductVM>();
+            List<ProductDto> result = new List<ProductDto>();
             foreach (var product in productNewBard)
             {
-                ProductVM item = product.Adapt<ProductVM>();
+                ProductDto item = product.Adapt<ProductDto>();
                 item.Description = "";
                  
                 float? star = product.OrderDetails.Sum(_ => _.Star);
@@ -77,10 +77,10 @@ namespace AppZseroEF6.Controllers
                                 && p.Name.ToLower().Contains(name.ToLower())
                                 )
                     .OrderByDescending(p => p.DateSale);
-            List<ProductVM> result = new List<ProductVM>();
+            List<ProductDto> result = new List<ProductDto>();
             foreach (var product in products)
             {
-                ProductVM item = product.Adapt<ProductVM>();
+                ProductDto item = product.Adapt<ProductDto>();
                 item.Description = "";
                 
                 float? star = product.OrderDetails.Sum(_ => _.Star);
@@ -105,10 +105,10 @@ namespace AppZseroEF6.Controllers
         public ActionResult AdminGets()
         {
             var products = _productService.GetProducts().OrderByDescending(p => p.DateSale);
-            List<ProductVM> result = new List<ProductVM>();
+            List<ProductDto> result = new List<ProductDto>();
             foreach (var product in products)
             {
-                ProductVM item = product.Adapt<ProductVM>();
+                ProductDto item = product.Adapt<ProductDto>();
                 
                 float? star = product.OrderDetails.Sum(_ => _.Star);
                 if(star != null && star > 0)
@@ -125,7 +125,7 @@ namespace AppZseroEF6.Controllers
         }
 
         [HttpPost("Admin")]
-        public ActionResult AdminPost(ProductCM model)
+        public ActionResult AdminPost(ProductDto model)
         {
             var product = model.Adapt<Product>();
             product.Status = (int)ProductStatus.available;
@@ -143,7 +143,7 @@ namespace AppZseroEF6.Controllers
         {
             var product = _productService.GetProduct(id);
             if (product == null) return NotFound();
-            ProductVM result = product.Adapt<ProductVM>();
+            ProductDto result = product.Adapt<ProductDto>();
             
             float? star = product.OrderDetails.Sum(_ => _.Star);
             if (star != null && star > 0)
@@ -158,55 +158,10 @@ namespace AppZseroEF6.Controllers
         }
 
          
-
-       
- 
-
-        [HttpGet("{id}/Rate")]
-        public ActionResult GetRates(long id)
-        {
-            var product = _productService.GetProduct(id);
-            if (product == null) return NotFound();
-            List<ProductRatingVM> result = new List<ProductRatingVM>();
-            foreach (var orderDetail in product.OrderDetails)
-            {
-                if (orderDetail.Star != null)
-                {
-                    ProductRatingVM item = orderDetail.Adapt<ProductRatingVM>();
-                    item.Rate = orderDetail.Star.Value;
-                    
-                    result.Add(item);
-                }
-            }
-            if (result.Count > 0)
-            {
-                var rate = result.Sum(_ => _.Rate) / result.Count;
-                var votes = result.Count;
-                result.Add(new ProductRatingVM { Rate = rate, Comment = votes + " votes" });
-            }
-            return Ok(result);
-        }
-
-        [HttpPut("Rating")]
-        public ActionResult UpdateRatings(ProductRatingCM model)
-        {
-            OrderDetail orderDetail = _orderDetailService.GetOrderDetail(model.OrderDetailId);
-            if (orderDetail == null) return NotFound();
-            if (orderDetail.Order.CurrentStatus != (int)OrderCurrentStatus.done
-                || orderDetail.Comment != null
-                || model.Rate > 5
-                || model.Rate < 0)
-            {
-                return BadRequest();
-            }
-            orderDetail.Star = model.Rate;
-            orderDetail.Comment = model.Comment;
-            _orderDetailService.SaveChanges();
-            return Ok();
-        }
+         
 
         [HttpPut("Admin")]
-        public ActionResult AdminPut(ProductUM model)
+        public ActionResult AdminPut(ProductDto model)
         {
             var product = _productService.GetProduct(model.Id);
             if (product == null) return NotFound();

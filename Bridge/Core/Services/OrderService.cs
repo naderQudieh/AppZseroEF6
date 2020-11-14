@@ -1,6 +1,6 @@
 ﻿using AppZseroEF6.Data.Infrastructure;
 using AppZseroEF6.Data.Repositories;
-using AppZseroEF6.Model;
+using AppZseroEF6.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

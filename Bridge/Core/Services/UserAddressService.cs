@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using AppZseroEF6.Model;
+using AppZseroEF6.Entities;
 using AppZseroEF6.Data.Repositories;
 using AppZseroEF6.Data.Infrastructure;
 

@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using AppZseroEF6.Model;
 using AppZseroEF6.Service;
 using AppZseroEF6.Util;
-using AppZseroEF6.ViewModels;
+using AppZseroEF6.ModelsDtos;
 using Mapster;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +26,7 @@ namespace AppZseroEF6.Controllers
         [HttpGet]
         public ActionResult Get()
         {
-            var categories = _categoryService.GetCategories().Select(c => c.Adapt<CategoryVM>());
+            var categories = _categoryService.GetCategories().Select(c => c.Adapt<CategoryDto>());
             return Ok(categories);
         }
 
@@ -38,10 +37,10 @@ namespace AppZseroEF6.Controllers
             if (category == null) return NotFound();
             var products = category.Products
                 .Where(p => p.DateSale <= DateTime.Now && p.Status == (int)ProductStatus.available);
-            List<ProductVM> result = new List<ProductVM>();
+            List<ProductDto> result = new List<ProductDto>();
             foreach (var product in products)
             {
-                ProductVM item = product.Adapt<ProductVM>();
+                ProductDto item = product.Adapt<ProductDto>();
                 item.Description = "";
                
                 item.Star = 4.6;
@@ -50,8 +49,8 @@ namespace AppZseroEF6.Controllers
             return Ok(result);
         }
         [HttpPost]
-        public ActionResult CreateCategory(Category category)
-        {
+        public ActionResult CreateCategory(CategoryDto category)
+        { 
             _categoryService.CreateCategory(category);
             _categoryService.SaveChanges();
             return StatusCode(

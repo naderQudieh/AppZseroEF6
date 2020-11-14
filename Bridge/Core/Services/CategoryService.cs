@@ -1,6 +1,8 @@
 ﻿using AppZseroEF6.Data.Infrastructure;
 using AppZseroEF6.Data.Repositories;
-using AppZseroEF6.Model;
+using AppZseroEF6.Entities;
+using AppZseroEF6.ModelsDtos;
+using Mapster;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +14,7 @@ namespace AppZseroEF6.Service
     {
         IQueryable<Category> GetCategories();
         Category GetCategory(long id);
-        void CreateCategory(Category category);
+        void CreateCategory(CategoryDto category);
         void SaveChanges();
     }
     public class CategoryService : ICategoryService
@@ -35,9 +37,10 @@ namespace AppZseroEF6.Service
         {
             return _repository.GetById(id);
         }
-        public void CreateCategory(Category category)
+        public void CreateCategory(CategoryDto category)
         {
-            _repository.Add(category);
+            Category item = category.Adapt<Category>(); 
+            _repository.Add(item);
         }
 
         public void SaveChanges()

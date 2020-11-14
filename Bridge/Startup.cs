@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using AppZseroEF6.Data;
 using AppZseroEF6.Data.Infrastructure;
 using AppZseroEF6.Data.Repositories;
-using AppZseroEF6.Model;
+using AppZseroEF6.Entities;
 using AppZseroEF6.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

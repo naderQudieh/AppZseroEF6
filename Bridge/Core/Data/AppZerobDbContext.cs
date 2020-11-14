@@ -1,4 +1,4 @@
-﻿using AppZseroEF6.Model;
+﻿using AppZseroEF6.Entities ;
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
