@@ -105,7 +105,7 @@ namespace AppZseroEF6.Controllers
             var order = model.Adapt<Order>();
             
             order.TotalAmount = totalAmount;
-            order.CurrentStatus = (int) OrderCurrentStatus.received;
+            order.Status = OrderCurrentStatus.received.ToString();
             _orderService.CreateOrder(order);
             foreach (var item in model.OrderDetail)
             {
@@ -126,8 +126,8 @@ namespace AppZseroEF6.Controllers
             
             var order = _orderService.GetOrders().Where(p=>p.Id == id ).FirstOrDefault();
             if (order == null) return NotFound();
-            if (order.CurrentStatus != (int)OrderCurrentStatus.received
-                && order.CurrentStatus != (int)OrderCurrentStatus.doing)
+            if (order.Status !=  OrderCurrentStatus.received.ToString()
+                && order.Status !=  OrderCurrentStatus.doing.ToString())
                 return BadRequest(); 
             _orderService.SaveChanges();
             return Ok();

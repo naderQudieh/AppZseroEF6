@@ -17,7 +17,7 @@ namespace AppZseroEF6.Data.Repositories
         public OrderDetailRepository(AppZerobDbContext DbContext) : base(DbContext)
         {
 
-            dataContext = DbContext;
+            this.dataContext = DbContext;
         }
     }
 }

@@ -58,6 +58,9 @@ namespace Bridge
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
+
+            services.AddTransient<IBasketRepository, BasketRepository>();
+
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<ICategoryService, CategoryService>();
  

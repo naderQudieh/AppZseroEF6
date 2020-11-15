@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using AppZseroEF6.Service;
 using AppZseroEF6.Util;
+using AppZseroEF6.Entities ;
 using AppZseroEF6.ModelsDtos;
 using Mapster;
 using Microsoft.AspNetCore.Http;
@@ -35,14 +36,12 @@ namespace AppZseroEF6.Controllers
         {
             var category = _categoryService.GetCategory(id);
             if (category == null) return NotFound();
-            var products = category.Products
-                .Where(p => p.DateSale <= DateTime.Now && p.Status == (int)ProductStatus.available);
+            var products = category.Products.Where(p => p.DateSale <= DateTime.Now && p.Status == (int)ProductStatus.available);
             List<ProductDto> result = new List<ProductDto>();
             foreach (var product in products)
             {
                 ProductDto item = product.Adapt<ProductDto>();
-                item.Description = "";
-               
+                item.Description = ""; 
                 item.Star = 4.6;
                 result.Add(item);
             }
@@ -50,8 +49,9 @@ namespace AppZseroEF6.Controllers
         }
         [HttpPost]
         public ActionResult CreateCategory(CategoryDto category)
-        { 
-            _categoryService.CreateCategory(category);
+        {
+            Category item = category.Adapt<Category>();
+            _categoryService.CreateCategory(item);
             _categoryService.SaveChanges();
             return StatusCode(
                 201, new

@@ -4,77 +4,97 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AppZseroEF6.Data.Infrastructure
 {
-    public abstract class RepositoryBase<T> where T : class
+
+    public class RepositoryBase<T> : IRepository<T> where T : class
     {
-        #region Properties
+        public   AppZerobDbContext dataContext;
+        public   DbSet<T> DbSet;
 
-        protected AppZerobDbContext dataContext;
-
-        protected readonly DbSet<T> dbSet;
-
-
-        public RepositoryBase(AppZerobDbContext DbContext)
+        public RepositoryBase(AppZerobDbContext context)
         {
-            this.dataContext = DbContext;
-            dbSet = DbContext.Set<T>();
+            dataContext = context;
+            DbSet = dataContext.Set<T>();
         }
-
         protected AppZerobDbContext DbContext
         {
             get { return dataContext; }
         }
-        #endregion
 
-      
-        #region Implementation
+        public virtual IQueryable<T> GetAll()
+        {
+            return DbSet;
+        }
+
+        public virtual IQueryable<T> AllIncluding(params Expression<Func<T, object>>[] includeProperties)
+        {
+            var query = GetAll();
+            foreach (var includeProperty in includeProperties) query = query.Include(includeProperty);
+            return query;
+        }
+
+        public virtual T GetById(object id)
+        {
+            return DbSet.Find(id);
+        }
+
+        public virtual async Task<T> GetByIdAsync(object id)
+        {
+            return await DbSet.FindAsync(id);
+        }
+
+        public virtual IQueryable<T> Where(params Expression<Func<T, bool>>[] predicates)
+        {
+            var query = GetAll();
+            foreach (var predicate in predicates) query = query.Where(predicate);
+            return query;
+        }
+
         public virtual void Add(T entity)
         {
-            dbSet.Add(entity);
+            var dbEntityEntry = dataContext.Entry(entity);
+            if (dbEntityEntry.State != EntityState.Detached)
+                dbEntityEntry.State = EntityState.Added;
+            else
+                DbSet.Add(entity);
         }
 
         public virtual void Update(T entity)
         {
-
-            dbSet.Attach(entity);
-            dataContext.Entry(entity).State = EntityState.Modified;
+            var dbEntityEntry = dataContext.Entry(entity);
+            if (dbEntityEntry.State == EntityState.Detached) 
+                DbSet.Attach(entity);
+            dbEntityEntry.State = EntityState.Modified;
         }
 
         public virtual void Delete(T entity)
         {
-            dbSet.Remove(entity);
+            var dbEntityEntry = dataContext.Entry(entity);
+            if (dbEntityEntry.State != EntityState.Deleted)
+            {
+                dbEntityEntry.State = EntityState.Deleted;
+            }
+            else
+            {
+                DbSet.Attach(entity);
+                DbSet.Remove(entity);
+            }
         }
 
-        public virtual void Delete(Expression<Func<T, bool>> where)
+        public virtual void Delete(object id)
         {
-            IEnumerable<T> objects = dbSet.Where<T>(where).AsEnumerable();
-            foreach (T obj in objects)
-                dbSet.Remove(obj);
+            var entity = GetById(id);
+            if (entity == null) return;
+            Delete(entity);
         }
 
-        public virtual T GetById(long id)
+        public void Delete(IEnumerable<T> entities)
         {
-            return dbSet.Find(id);
+            DbSet.RemoveRange(entities);
         }
-
-        public virtual IQueryable<T> GetAll()
-        {
-            return dbSet;
-        }
-
-        public virtual IQueryable<T> GetMany(Expression<Func<T, bool>> where)
-        {
-            return dbSet.Where(where);
-        }
-
-        public T Get(Expression<Func<T, bool>> where)
-        {
-            return dbSet.Where(where).FirstOrDefault<T>();
-        }
-
-        #endregion
-
     }
+    
 }
