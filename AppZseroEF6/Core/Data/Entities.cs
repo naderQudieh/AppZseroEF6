@@ -94,23 +94,17 @@ namespace AppZseroEF6.Entities
     }
     public class OrderDetail : BaseEntity
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long Id { get; set; }
+        
         public long ProductId { get; set; }
-        public long OrderId { get; set; }
-        public String Size { get; set; }
-        public String Smell { get; set; }
+        public string OrderId { get; set; } 
         public int Quantity { get; set; }
-        public String Comment { get; set; }
+        public string Comment { get; set; }
         public float? Star { get; set; }
         public virtual Order Order { get; set; }
         public virtual Product Product { get; set; }
     }
     public class Order : BaseEntity
-    {
-     
-      
+    { 
         public String BuyerId { get; set; }
         public double TotalAmount { get; set; }
         public DateTime DateCreated { get; set; }

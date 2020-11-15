@@ -74,7 +74,7 @@ namespace AppZseroEF6.Controllers
        
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> getOrder(long id)
+        public async Task<ActionResult> getOrder(string id)
         {
             var order = _orderService.GetOrder(id);
             OrderDto result = order.Adapt<OrderDto>();
@@ -121,7 +121,7 @@ namespace AppZseroEF6.Controllers
        
 
         [HttpPut("{id}/Cancel")]
-        public async Task<ActionResult> CancelOrder(long id)
+        public async Task<ActionResult> CancelOrder(string id)
         {
             
             var order = _orderService.GetOrders().Where(p=>p.Id == id ).FirstOrDefault();

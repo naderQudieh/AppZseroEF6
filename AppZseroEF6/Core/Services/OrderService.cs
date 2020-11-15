@@ -12,7 +12,7 @@ namespace AppZseroEF6.Service
     public interface IOrderService
     {
         IQueryable<Order> GetOrders();
-        Order GetOrder(long id);
+        Order GetOrder(string id);
         void CreateOrder(Order order);
         void SaveChanges();
     }
@@ -33,7 +33,7 @@ namespace AppZseroEF6.Service
             _repository.Add(order);
         }
 
-        public Order GetOrder(long id)
+        public Order GetOrder(string id)
         {
             return _repository.GetById(id);
         }
