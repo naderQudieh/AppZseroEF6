@@ -45,7 +45,6 @@
 
   <ItemGroup>
     <Folder Include="Core\Shared\" />
-    <Folder Include="Core\Services\" />
   </ItemGroup>
 
 </Project>

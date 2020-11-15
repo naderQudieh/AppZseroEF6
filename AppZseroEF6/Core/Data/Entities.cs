@@ -27,20 +27,19 @@ namespace AppZseroEF6.Entities
             date_modified = DateTime.Now;
         }
     }
-    public class CustomerBasketItems : BaseEntity
-    { 
+    public class CustomerCartItems : BaseEntity
+    {
+        public string ProductId { get; set; }
         public string ProductName { get; set; }
         public decimal Price { get; set; }
         public int Quantity { get; set; }
-        public string PictureUrl { get; set; }
-        public string Brand { get; set; }
-        public string Type { get; set; }
-    }
-    public class CustomerBasket : BaseEntity
-    { 
 
-        public string Id { get; set; }
-        public List<CustomerBasketItems> Items { get; set; } = new List<CustomerBasketItems>();
+        public Product  Product { get; set; }
+    }
+    public class CustomerCart : BaseEntity
+    { 
+         
+        public List<CustomerCartItems> Items { get; set; } = new List<CustomerCartItems>();
         public int? DeliveryMethodId { get; set; }
         public string ClientSecret { get; set; }
         public string PaymentIntentId { get; set; }
@@ -67,24 +66,15 @@ namespace AppZseroEF6.Entities
 
     }
     public class Product : BaseEntity
-    {
-        public Product()
-        {
-
-        }
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long Id { get; set; }
+    {  
         public String Name { get; set; }
         public String Description { get; set; }
         public double CurrentPrice { get; set; }
         public double OldPrice { get; set; }
         public bool IsSale { get; set; }
         public long CategoryId { get; set; }
-        public int Status { get; set; }
-        public long GenderId { get; set; }
-        [ForeignKey("GenderId")]
-
+        public string Status { get; set; }
+      
         public DateTime DateSale { get; set; }
         [ForeignKey("CategoryId")]
         public virtual Category Category { get; set; }
@@ -95,7 +85,7 @@ namespace AppZseroEF6.Entities
     public class OrderDetail : BaseEntity
     {
         
-        public long ProductId { get; set; }
+        public string ProductId { get; set; }
         public string OrderId { get; set; } 
         public int Quantity { get; set; }
         public string Comment { get; set; }
@@ -107,7 +97,6 @@ namespace AppZseroEF6.Entities
     { 
         public String BuyerId { get; set; }
         public double TotalAmount { get; set; }
-        public DateTime DateCreated { get; set; }
         public String Receiver { get; set; }
         public String Address { get; set; }
         public String PhoneNumber { get; set; }

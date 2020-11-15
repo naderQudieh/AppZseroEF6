@@ -9,35 +9,35 @@ using System.Text;
 namespace AppZseroEF6.Service
 {
     
-    public interface IOrderService
+    public interface ICustomerCartService
     {
-        IQueryable<Order> GetOrders();
-        Order GetOrder(string id);
-        void CreateOrder(Order order);
+        IQueryable<CustomerCart> GetCustomerCarts();
+        CustomerCart GetCustomerCart(string id);
+        void CreateCustomerCart(CustomerCart CustomerCart);
         void SaveChanges();
     }
-    public class OrderService : IOrderService
+    public class CustomerCartService : ICustomerCartService
     {
-        private readonly IOrderRepository _repository;
+        private readonly ICustomerCartRepository _repository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public OrderService(IOrderRepository repository, IUnitOfWork unitOfWork)
+        public CustomerCartService(ICustomerCartRepository repository, IUnitOfWork unitOfWork)
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
         }
 
-        public void CreateOrder(Order order)
-        { 
-            _repository.Add(order);
+        public void CreateCustomerCart(CustomerCart CustomerCart)
+        {  
+            _repository.Add(CustomerCart);
         }
 
-        public Order GetOrder(string id)
+        public CustomerCart GetCustomerCart(string id)
         {
             return _repository.GetById(id);
         }
 
-        public IQueryable<Order> GetOrders()
+        public IQueryable<CustomerCart> GetCustomerCarts()
         {
             return _repository.GetAll();
         }

@@ -36,7 +36,7 @@ namespace AppZseroEF6.Controllers
         {
             var category = _categoryService.GetCategory(id);
             if (category == null) return NotFound();
-            var products = category.Products.Where(p => p.DateSale <= DateTime.Now && p.Status == (int)ProductStatus.available);
+            var products = category.Products.Where(p => p.DateSale <= DateTime.Now && p.Status ==  ProductStatus.available.ToString());
             List<ProductDto> result = new List<ProductDto>();
             foreach (var product in products)
             {

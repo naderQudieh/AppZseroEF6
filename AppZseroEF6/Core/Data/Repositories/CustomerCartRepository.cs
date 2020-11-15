@@ -12,13 +12,13 @@ using AppZseroEF6.Data.Infrastructure;
 namespace AppZseroEF6.Data.Repositories
 {
     
-    public interface IBasketRepository : IRepository<CustomerBasket>
+    public interface ICustomerCartRepository : IRepository<CustomerCart>
     {
 
     }
-    public class  BasketRepository : RepositoryBase<CustomerBasket>, IBasketRepository
+    public class  CustomerCartRepository : RepositoryBase<CustomerCart>, ICustomerCartRepository
     {
-        public BasketRepository(AppZerobDbContext DbContext) : base(DbContext)
+        public CustomerCartRepository(AppZerobDbContext DbContext) : base(DbContext)
         {
 
             dataContext = DbContext;

@@ -31,21 +31,25 @@ namespace AppZseroEF6.ModelsDtos
             };
         }
     }
-    public class CustomerBasketDto
+    public class CustomerCartDto
     {
         [Required]
         public string Id { get; set; }
-        public List<BasketItemDto> Items { get; set; } = new List<BasketItemDto>();
+        public List<CustomerCartItemDto> Items { get; set; } = new List<CustomerCartItemDto>();
         public int? DeliveryMethodID { get; set; }
         public string ClientSecret { get; set; }
         public string PaymentIntentId { get; set; }
         public decimal ShippingPrice { get; set; }
     }
-    public class BasketItemDto
+    public class CustomerCartItemDto
     {
 
         [Required]
         public string Id { get; set; }
+        
+        [Required]
+        public string ProductId { get; set; }
+
         [Required]
         public string ProductName { get; set; }
         [Required]
@@ -54,12 +58,9 @@ namespace AppZseroEF6.ModelsDtos
         [Required]
         [Range(1, double.MaxValue, ErrorMessage = "Quantity must be at least 1")]
         public int Quantity { get; set; }
-        [Required]
-        public string PictureUrl { get; set; }
-        [Required]
-        public string Brand { get; set; }
-        [Required]
-        public string Type { get; set; }
+
+        public ProductDto Product  { get; set; }
+
     }
     public class CategoryDto
     {

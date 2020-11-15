@@ -27,7 +27,7 @@ namespace AppZseroEF6.Controllers
         public ActionResult GetNewBrand()
         {
             var productNewBard = _productService.GetProducts()
-                    .Where(p => p.DateSale <= DateTime.Now && p.Status ==(int)ProductStatus.available)
+                    .Where(p => p.DateSale <= DateTime.Now && p.Status == ProductStatus.available.ToString())
                     .OrderByDescending(p => p.DateSale).Take(5);
             List<ProductDto> result = new List<ProductDto>();
             foreach(var product in productNewBard)
@@ -45,7 +45,7 @@ namespace AppZseroEF6.Controllers
         public ActionResult GetNewBrandExplore()
         {
             var productNewBard = _productService.GetProducts()
-                    .Where(p => p.DateSale <= DateTime.Now && p.Status == (int)ProductStatus.available)
+                    .Where(p => p.DateSale <= DateTime.Now && p.Status ==  ProductStatus.available.ToString())
                     .OrderByDescending(p => p.DateSale).Skip(5).Take(5);
             List<ProductDto> result = new List<ProductDto>();
             foreach (var product in productNewBard)
@@ -73,7 +73,7 @@ namespace AppZseroEF6.Controllers
             name = name == null ? "" : name;
             var products = _productService.GetProducts()
                     .Where(p => p.DateSale <= DateTime.Now
-                                && p.Status == (int)ProductStatus.available
+                                && p.Status ==  ProductStatus.available.ToString()
                                 && p.Name.ToLower().Contains(name.ToLower())
                                 )
                     .OrderByDescending(p => p.DateSale);
@@ -128,7 +128,7 @@ namespace AppZseroEF6.Controllers
         public ActionResult AdminPost(ProductDto model)
         {
             var product = model.Adapt<Product>();
-            product.Status = (int)ProductStatus.available;
+            product.Status =  ProductStatus.available.ToString();
             
             _productService.CreateProduct(product);
             _productService.SaveChanges();

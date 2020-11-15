@@ -33,7 +33,7 @@ namespace API.Controllers
 
         [Authorize]
         [HttpPost("{basketId}")]
-        public async Task<ActionResult<CustomerBasket>> CreateOrUpdatePaymentIntent(string basketId)
+        public async Task<ActionResult<CustomerCart>> CreateOrUpdatePaymentIntent(string basketId)
         {
             var basket = await _paymentService.CreateOrUpdatePaymentIntent(basketId);
             if (basket == null)

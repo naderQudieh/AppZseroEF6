@@ -16,30 +16,30 @@ namespace AppZseroEF6.Service
 {
     public interface IPaymentService
     {
-        Task<CustomerBasket> CreateOrUpdatePaymentIntent(string basketId);
+        Task<CustomerCart> CreateOrUpdatePaymentIntent(string basketId);
         Task<Order> UpdateOrderPaymentSucceeded(string paymentIntentId);
 
         Task<Order> UpdateOrderPaymentFailed(string paymentIntentId);
     }
     public class PaymentService : IPaymentService
     {
-        private readonly IBasketRepository _basketRepository;
+        private readonly ICustomerCartRepository _basketRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IConfiguration _config;
 
-        public PaymentService(IBasketRepository basketRepository, IUnitOfWork unitOfWork, IConfiguration config)
+        public PaymentService(ICustomerCartRepository basketRepository, IUnitOfWork unitOfWork, IConfiguration config)
         {
             _basketRepository = basketRepository;
             _unitOfWork = unitOfWork;
             _config = config;
         }
 
-        public async Task<CustomerBasket> CreateOrUpdatePaymentIntent(string basketId)
+        public async Task<CustomerCart> CreateOrUpdatePaymentIntent(string basketId)
         {
             try
             {
                 StripeConfiguration.ApiKey = _config["StripeSettings:SecretKey"];
-                var basket = await _basketRepository.GetByIdAsync(basketId);
+                CustomerCart basket = await _basketRepository.GetByIdAsync(basketId);
                 if (basket == null)
                 {
                     return null;

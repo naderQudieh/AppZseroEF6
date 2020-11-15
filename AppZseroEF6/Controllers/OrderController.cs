@@ -63,7 +63,7 @@ namespace AppZseroEF6.Controllers
         public async Task<ActionResult> GetAll()
         {
             var orders = _orderService.GetOrders()
-                .OrderByDescending(_ => _.DateCreated)
+                .OrderByDescending(_ => _.date_created)
                 .Select(_=>_.Adapt<OrderDto>());
 
             
