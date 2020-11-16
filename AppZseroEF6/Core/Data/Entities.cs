@@ -72,11 +72,12 @@ namespace AppZseroEF6.Entities
         public double CurrentPrice { get; set; }
         public double OldPrice { get; set; }
         public bool IsSale { get; set; }
-        public long CategoryId { get; set; }
+        public string CategoryId { get; set; }
         public string Status { get; set; }
       
         public DateTime DateSale { get; set; }
-        [ForeignKey("CategoryId")]
+       // [ForeignKey("CategoryId")]
+       
         public virtual Category Category { get; set; }
 
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
@@ -105,6 +106,118 @@ namespace AppZseroEF6.Entities
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
 
     }
-    
-     
+
+   
+    public class User2  : BaseEntity
+    {
+
+        public long user_id { get; set; }
+
+        [Column("username")]
+        [JsonProperty("username")]
+        public string username { get; set; }
+        public string fname { get; set; }
+        public string lname { get; set; }
+        public string email { get; set; }
+        public string phone { get; set; }
+        [JsonIgnore]
+        public string password { get; set; }
+        [JsonIgnore]
+        public string password_hash { get; set; }
+
+        [JsonIgnore]
+        public string password_salt { get; set; }
+        public string role { get; set; }
+
+
+        [NotMapped]
+        public string verification_token { get; set; }
+        [NotMapped]
+        public DateTime? date_verified { get; set; }
+
+
+        public DateTime date_created { get; set; }
+
+
+        public DateTime date_modified { get; set; }
+
+        [Column("language")]
+        public int language { get; set; }
+
+        [Column("profile_picture")]
+        public string profile_picture { get; set; }
+
+
+    }
+
+    [Table("usertoken")]
+    public class UserToken
+    {
+        public int Id { get; set; }
+
+        public string AccessToken { get; set; }
+
+        public DateTimeOffset AccessTokenExpiresDateTime { get; set; }
+
+        public string RefreshToken { get; set; }
+
+        public DateTimeOffset RefreshTokenExpiresDateTime { get; set; }
+
+        public int UserId { get; set; }
+        public string DeviceBrand { get; set; }
+        public string DeviceModel { get; set; }
+        public string OS { get; set; }
+        public string OSPlatform { get; set; }
+        public string OSVersion { get; set; }
+        public string ClientName { get; set; }
+        public string ClientType { get; set; }
+        public string ClientVersion { get; set; }
+        public virtual User User { get; set; }
+    }
+
+    [Table("user")]
+    public class User
+    {
+        public User()
+        {
+            UserTokens = new HashSet<UserToken>(); 
+            Orders = new HashSet<Order>(); 
+        }
+
+        public int Id { get; set; }
+        public string StripeCustomerId { get; set; }
+        public string PaypalCustomerId { get; set; }
+
+        [Required]
+        public string FullName { get; set; }
+
+        [Required]
+        public string Password { get; set; }
+
+        [Required]
+        public string Role { get; set; }
+
+        public string Email { get; set; }
+        public string Username { get; set; }
+
+        public string Phone { get; set; }
+
+        public string Status { get; set; }
+
+        public DateTime? LastLoggedIn { get; set; }
+        public string Avatar { get; set; }
+        public string AvatarMimeType { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime ModifiedAt { get; set; }
+        public DateTime? ActivatedAt { get; set; }
+        public DateTime? DisabledAt { get; set; }
+        public bool MarkedForDeletion { get; set; }
+        public int VerificationCode { get; set; }
+        public bool TermsAndConditionsAccepted { get; set; }
+        public string TimeZone { get; set; }
+        public int TimeZoneOffset { get; set; }
+        public double CurrentImc { get; set; } 
+        public virtual ICollection<UserToken> UserTokens { get; set; } 
+        public virtual ICollection<Order> Orders { get; set; }
+    }
 }

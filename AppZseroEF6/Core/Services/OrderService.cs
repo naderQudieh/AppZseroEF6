@@ -29,7 +29,7 @@ namespace AppZseroEF6.Service
 
         public void CreateOrder(Order order)
         { 
-            _repository.Add(order);
+            _repository.AddAsync(order);
         }
 
         public Order GetOrder(string id)

@@ -29,7 +29,7 @@ namespace AppZseroEF6.Service
 
         public void CreateCustomerCart(CustomerCart CustomerCart)
         {  
-            _repository.Add(CustomerCart);
+            _repository.AddAsync(CustomerCart);
         }
 
         public CustomerCart GetCustomerCart(string id)

@@ -1,11 +1,25 @@
-﻿using System;
+﻿using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.OpenApi.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using DocumentFormat.OpenXml.CustomXmlSchemaReferences;
+using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.AspNetCore.JsonPatch.Operations;
+using System.Runtime.Serialization;
+using JsonIgnoreAttribute = Newtonsoft.Json.JsonIgnoreAttribute;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace AppZseroEF6.ModelsDtos
 {
+ 
+
     public class ApiResponse
     {
         public int StatusCode { get; set; }
@@ -33,12 +47,18 @@ namespace AppZseroEF6.ModelsDtos
     }
     public class CustomerCartDto
     {
+        [BindNever]
+        [JsonIgnore]
         [Required]
         public string Id { get; set; }
+        [IgnoreDataMember]
+        [JsonIgnore]
         public List<CustomerCartItemDto> Items { get; set; } = new List<CustomerCartItemDto>();
         public int? DeliveryMethodID { get; set; }
         public string ClientSecret { get; set; }
+        [JsonIgnore]
         public string PaymentIntentId { get; set; }
+     
         public decimal ShippingPrice { get; set; }
     }
     public class CustomerCartItemDto
@@ -46,7 +66,7 @@ namespace AppZseroEF6.ModelsDtos
 
         [Required]
         public string Id { get; set; }
-        
+     
         [Required]
         public string ProductId { get; set; }
 
@@ -59,6 +79,7 @@ namespace AppZseroEF6.ModelsDtos
         [Range(1, double.MaxValue, ErrorMessage = "Quantity must be at least 1")]
         public int Quantity { get; set; }
 
+       
         public ProductDto Product  { get; set; }
 
     }
@@ -73,23 +94,23 @@ namespace AppZseroEF6.ModelsDtos
         public String Receiver { get; set; }
         public String Address { get; set; }
         public String PhoneNumber { get; set; }
-        public String Note { get; set; }
+        public String Note { get; set; } 
         public List<OrderDetailDto> OrderDetail { get; set; }
 
     }
     public class OrderDetailDto
     {
-        public long Id { get; set; }
-        public long ProductId { get; set; }
+        public string Id { get; set; }
+        public string ProductId { get; set; }
         public String ProductName { get; set; }
         public String Size { get; set; }
         public String Smell { get; set; }
         public int Quantity { get; set; }
         public String Image { get; set; }
     }
-    public class ProductDto
-    {
-        public long Id { get; set; }
+    public class ProductDto : BaseEntity
+    { 
+       
         public String Name { get; set; }
         public String Description { get; set; }
         public double CurrentPrice { get; set; }
@@ -97,7 +118,7 @@ namespace AppZseroEF6.ModelsDtos
         public bool IsSale { get; set; }
         public String BannerPath { get; set; }
         public double Star { get; set; }
-        public long CategoryId { get; set; }
+        public string CategoryId { get; set; }
 
     }
 
@@ -110,5 +131,26 @@ namespace AppZseroEF6.ModelsDtos
         public bool IsHome { get; set; }
     }
 
-    
+    public class BaseEntity
+    {
+        [IgnoreDataMember]
+        [JsonIgnore]
+        public string Id { get; set; }
+
+
+        [IgnoreDataMember]
+        [JsonIgnore]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "date_created")]
+        public DateTime date_created { get; set; }
+        [IgnoreDataMember]
+        [JsonIgnore]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "date_modified")]
+        public DateTime date_modified { get; set; }
+        public BaseEntity()
+        {
+            Id = Guid.NewGuid().ToString().ToLower().Replace("-", "");
+            date_created = DateTime.Now;
+            date_modified = DateTime.Now;
+        }
+    }
 }

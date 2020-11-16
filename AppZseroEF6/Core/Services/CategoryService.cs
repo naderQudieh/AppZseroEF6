@@ -40,7 +40,7 @@ namespace AppZseroEF6.Service
         public void CreateCategory(Category  category)
         {
 
-            _repCategory.Add(category);
+            _repCategory.AddAsync(category);
         }
 
         public void SaveChanges()
@@ -55,7 +55,7 @@ namespace AppZseroEF6.Service
             {
                 try
                 {
-                    _repCategory.Add(_category); 
+                    _repCategory.AddAsync(_category); 
                     await _unitOfWork.CommitAsync();
                     dbContextTransaction.Commit();
                 }

@@ -26,7 +26,7 @@ namespace AppZseroEF6.Service
 
         public void CreateUserAddress(UserAddress UserAddress)
         {
-            _repository.Add(UserAddress);
+            _repository.AddAsync(UserAddress);
         }
 
         public UserAddress GetUserAddress(long id)

@@ -22,6 +22,7 @@ using Microsoft.EntityFrameworkCore.SqlServer;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
+using AppZseroEF6.ModelsDtos;
 
 namespace Bridge
 {
@@ -60,6 +61,7 @@ namespace Bridge
 
 
             services.AddTransient<ICustomerCartRepository, CustomerCartRepository>();
+            services.AddTransient<ICustomerCartService, CustomerCartService>();
 
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<ICategoryService, CategoryService>();
@@ -138,13 +140,14 @@ namespace Bridge
                     policy.AllowAnyHeader().AllowAnyMethod().WithOrigins().AllowCredentials();
                 });
             });
-
+            services.AddSwaggerGenNewtonsoftSupport();
             services.AddSwaggerGen(c =>
-            {
-
+            { 
+                c.IgnoreObsoleteActions();
+                c.IgnoreObsoleteProperties();
                 c.CustomSchemaIds(type => type.ToString());
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AppZeroCore3.1", Version = "v1" });
-
+               
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",

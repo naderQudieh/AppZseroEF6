@@ -53,13 +53,13 @@ namespace AppZseroEF6.Data.Infrastructure
             return query;
         }
 
-        public virtual void Add(T entity)
+        public virtual async Task   AddAsync(T entity)
         {
             var dbEntityEntry = dataContext.Entry(entity);
             if (dbEntityEntry.State != EntityState.Detached)
                 dbEntityEntry.State = EntityState.Added;
             else
-                DbSet.Add(entity);
+                DbSet.AddAsync(entity);
         }
 
         public virtual void Update(T entity)

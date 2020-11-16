@@ -11,7 +11,7 @@ namespace AppZseroEF6.Service
     public interface IProductService
     {
         IQueryable<Product> GetProducts();
-        Product GetProduct(long id);
+        Product GetProduct(string id);
         void CreateProduct(Product product);
         void DeleteProduct(Product product);
         void SaveChanges();
@@ -29,7 +29,7 @@ namespace AppZseroEF6.Service
 
         public void CreateProduct(Product product)
         {
-            _repository.Add(product);
+            _repository.AddAsync(product);
         }
 
         public void DeleteProduct(Product product)
@@ -37,7 +37,7 @@ namespace AppZseroEF6.Service
             _repository.Delete(product);
         }
 
-        public Product GetProduct(long id)
+        public Product GetProduct(string id)
         {
             return _repository.GetById(id);
         }

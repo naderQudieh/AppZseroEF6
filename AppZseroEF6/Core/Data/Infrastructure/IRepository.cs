@@ -19,7 +19,7 @@ namespace AppZseroEF6.Data.Infrastructure
 
         Task<T> GetByIdAsync(object id);
 
-        void Add(T entity);
+        Task AddAsync(T entity);
 
         void Update(T entity);
 

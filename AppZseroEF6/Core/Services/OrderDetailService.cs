@@ -30,7 +30,7 @@ namespace AppZseroEF6.Service
 
         public void CreateOrderDetail(OrderDetail OrderDetail)
         {
-            _repository.Add(OrderDetail);
+            _repository.AddAsync(OrderDetail);
         }
 
         public OrderDetail GetOrderDetail(long id)

@@ -139,7 +139,7 @@ namespace AppZseroEF6.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult GetById(long id)
+        public ActionResult GetById(string id)
         {
             var product = _productService.GetProduct(id);
             if (product == null) return NotFound();
@@ -176,7 +176,7 @@ namespace AppZseroEF6.Controllers
         }
 
         [HttpDelete("Admin/{id}")]
-        public ActionResult AdminDelete(long id)
+        public ActionResult AdminDelete(string id)
         {
             var product = _productService.GetProduct(id);
             if (product == null) return NotFound();
